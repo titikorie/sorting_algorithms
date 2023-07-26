@@ -1,8 +1,30 @@
 #include "sort.h"
+
 /**
- * insertion_sort_list - function that sorts a doubly linked list
- * of integers in ascending order using the Insertion sort algorithm
- * @list: Dobule linked list to sort
+ * swap_nodes - Swap two nodes in a listint_t doubly-linked list.
+ * @h: a pointer to the head of the doubly-linked list.
+ * @a: a pointer to the first node to swap.
+ * @b: a pointer to the second node to swap.
+ */
+void swap_nodes(listint_t **h, listint_t **a, listint_t *b)
+{
+	(*a)->next = b->next;
+	if (b->next != NULL)
+		b->next->previous = *a;
+	b->previous = (*a)->previous;
+	b->next = *a;
+	if ((*a)->previous != NULL)
+		(*a)->previous->next = b;
+	else
+		*h = b;
+	(*a)->previous = b;
+	*a = b->previous;
+}
+
+/**
+ * insertion_sort_list - Sorts a doubly linked list of integers
+ *                       using the insertion sort algorithm.
+ * @list: A pointer to the head of a doubly-linked list of integers.
  */
 void insertion_sort_list(listint_t **list)
 {
@@ -30,20 +52,4 @@ void insertion_sort_list(listint_t **list)
 			tmp = tmp->next;
 		}
 	}
-}
-/**
- * swap_nodes - swap two nodes
- * @l: pointer to the first node
- * @r: pointer to the second node
- */
-void swap_nodes(listint_t **l, listint_t **r)
-{
-	(*l)->next = (*r)->next;
-	(*l)->previous = (*r)->previous;
-	if ((*r)->next)
-		(*r)->next->previous = (*l);
-	if ((*l)->previous)
-		(*l)->previous->next = (*r);
-	(*r)->next = (*l);
-	(*l)->previous = (*r);
 }
