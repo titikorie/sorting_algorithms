@@ -6,29 +6,19 @@
  */
 void insertion_sort_list(listint_t **list)
 {
-	listint_t *temp = NULL, *curr = NULL, *prev = NULL;
+		listint_t *node;
 
-	if (list && *list && (*list)->next)
+	if (list == NULL || (*list)->next == NULL)
+		return;
+	node = (*list)->next;
+	while (node)
 	{
-		temp = (*list)->next;
-
-		while (temp) /* iterate to end of list */
+		while ((node->prev) && (node->prev->n > node->n))
 		{
-			curr = temp;
-			prev = temp->prev;
-
-			/* if values are not ascending */
-			while (prev && curr->n < prev->n)
-			{
-				swap_nodes(&prev, &curr);
-				if (prev == *list) /* if curr now list head */
-					*list = curr;
-				print_list(*list);
-				/* if (curr->prev != NULL) if not at head of list */
-				prev = curr->prev;
-			}
-			temp = temp->next;
+			node = swap_node(node, list);
+			print_list(*list);
 		}
+		node = node->next;
 	}
 }
 /**
