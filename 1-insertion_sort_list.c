@@ -6,41 +6,44 @@
  */
 void insertion_sort_list(listint_t **list)
 {
-		listint_t *node;
+	listint_t *tmp = NULL, *current = NULL, *previous = NULL;
 
-	if (list == NULL || (*list)->next == NULL)
-		return;
-	node = (*list)->next;
-	while (node)
+	if (list && *list && (*list)->next)
 	{
-		while ((node->prev) && (node->prev->n > node->n))
+		tmp = (*list)->next;
+
+		while (tmp) /* iterate to end of list */
 		{
-			node = swap_node(node, list);
-			print_list(*list);
+			current = tmp;
+			previous = tmp->previous;
+
+			/* if values are not ascending */
+			while (previous && current->n < previous->n)
+			{
+				swap_nodes(&previous, &current);
+				if (previous == *list) /* if current now list head */
+					*list = current;
+				print_list(*list);
+				/* if (current->previous != NULL) if not at head of list */
+				previous = current->previous;
+			}
+			tmp = tmp->next;
 		}
-		node = node->next;
 	}
 }
 /**
- *swap_node - swap two nodes
- *@node: node
- *@list: node list
- *Return: return a pointer to a node which was enter it
+ * swap_nodes - swap two nodes
+ * @l: pointer to the first node
+ * @r: pointer to the second node
  */
-listint_t *swap_node(listint_t *node, listint_t **list)
+void swap_nodes(listint_t **l, listint_t **r)
 {
-	listint_t *back = node->prev, *current = node;
-	/*NULL, 19, 48, 9, 71, 13, NULL*/
-
-	back->next = curr->next;
-	if (curr->next)
-		curr->next->prev = back;
-	curr->next = back;
-	curr->prev = back->prev;
-	back->prev = curr;
-	if (curr->prev)
-		curr->prev->next = curr;
-	else
-		*list = curr;
-	return (curr);
+	(*l)->next = (*r)->next;
+	(*l)->previous = (*r)->previous;
+	if ((*r)->next)
+		(*r)->next->previous = (*l);
+	if ((*l)->previous)
+		(*l)->previous->next = (*r);
+	(*r)->next = (*l);
+	(*l)->previous = (*r);
 }
